@@ -16,29 +16,28 @@ let validateNewProduct = (formProduct) => {
     if (formProduct === null) {
         console.log("validateNewProduct(): Parameter is null");
     }
-
     // Validate form data for new product fields
     // Creating a product does not need a product id
     // Adding '' to the numeric values makes them strings for validation purposes ()
+    // appending + '' to numbers as the validator only works with strings
     if (
-        validator.isNumeric(formProduct.CategoryId + '', {no_symbols: true, allow_negatives: false}) && 
-        !validator.isEmpty(formProduct.ProductName) && 
-        !validator.isEmpty(formProduct.ProductDescription) && 
-        validator.isNumeric(formProduct.ProductStock + '', { no_symbols: true, allow_negatives: false }) && 
-        validator.isCurrency(formProduct.ProductPrice + '', { no_symbols: true, allow_negatives: false }))
+        validator.isNumeric(formProduct.category_id + '', { no_symbols: true, allow_negatives: false }) && 
+        !validator.isEmpty(formProduct.product_name) && 
+        !validator.isEmpty(formProduct.product_description) && 
+        validator.isNumeric(formProduct.product_stock + '', { no_symbols: true, allow_negatives: false }) && 
+        validator.isCurrency(formProduct.product_price + '', { no_symbols: true, allow_negatives: false }))
     {
         // Validation passed
         // create a new Product instance based on Product model object
         // no value for product id (passed as null)
         validatedProduct = new Product(
                 null,
-                formProduct.CategoryId,
-
+                formProduct.category_id,
                 // escape is to sanitize - it removes/ encodes any html tags
-                validator.escape(formProduct.ProductName),
-                validator.escape(formProduct.ProductDescription),
-                formProduct.ProductStock,
-                formProduct.ProductPrice
+                validator.escape(formProduct.product_name),
+                validator.escape(formProduct.product_description),
+                formProduct.product_stock,
+                formProduct.product_price
             );
     } else {
         // debug
@@ -47,9 +46,8 @@ let validateNewProduct = (formProduct) => {
     // return new validated product object
     return validatedProduct;
 }
-
 // Module exports
 // expose these functions
 module.exports = {
-    validateNewProduct
+    validateNewProduct,
 }

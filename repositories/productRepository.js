@@ -22,6 +22,10 @@ const SQL_SELECT_BY_ID = 'SELECT * FROM dbo.product WHERE _id = @id for json pat
 // for json path, without_array_wrapper - use for single json result
 const SQL_SELECT_BY_CATID = 'SELECT * FROM dbo.product WHERE category_id = @id ORDER BY product_name ASC for json path;';
 
+// Second statement (Select...) returns inserted record identified by _id = SCOPE_IDENTITY()
+const SQL_INSERT = 'INSERT INTO dbo.product (category_id, product_name, product_description, product_stock, product_price) VALUES (@categoryId, @productName, @productDescription, @ProductStock, @ProductPrice); SELECT * from dbo.product WHERE _id = SCOPE_IDENTITY();';
+const SQL_UPDATE = 'UPDATE dbo.product SET category_id = @categoryId, product_name = @productName, product_description = @productDescription, ProductStock = @ProductStock, ProductPrice = @ProductPrice WHERE _id = @id; SELECT * FROM dbo.product WHERE _id = @id;';
+const SQL_DELETE = 'DELETE FROM dbo.product WHERE _id = @id;';
 
 // Get all products
 // This is an async function named getProducts defined using ES6 => syntax
@@ -102,10 +106,48 @@ let getProductsByCatId = async (categoryId) => {
     return products;
 };
 
+// insert/ create a new product
+// parameter: a validated product model object
+let createProduct = async (product) => {
+
+    // Declare constanrs and variables
+    let insertedProduct;
+
+    // Insert a new product
+    // Note: no Product yet
+    try {
+        // Get a DB connection and execute SQL
+        const pool = await dbConnPoolPromise
+        const result = await pool.request()
+
+            // set named parameter(s) in query
+            // checks for potential sql injection
+            .input('categoryId', sql.Int, product.category_id)    
+            .input('productName', sql.NVarChar, product.product_name)
+            .input('productDescription', sql.NVarChar, product.product_description)
+            .input('productStock', sql.Int,  product.product_stock)
+            .input('productPrice', sql.Decimal, product.product_price)
+
+            // Execute Query
+            .query(SQL_INSERT);      
+
+        // The newly inserted product is returned by the query    
+        insertedProduct = result.recordset[0];
+
+        // catch and log DB errors
+        } catch (err) {
+            console.log('DB Error - error inserting a new product: ', err.message);
+        }
+
+        // Return the product data
+        return insertedProduct;
+};
+
 
 // Export 
 module.exports = {
     getProducts,
     getProductById,
     getProductsByCatId,
+    createProduct
 };

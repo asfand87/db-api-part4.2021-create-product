@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 // Start the HTTP server using HOST address and PORT consts defined above
 // Lssten for incoming connections
 const server = app.listen(PORT, HOST, () => {
-    console.log(`Express server listening on http://${HOST}:${PORT}`);
+    console.log(`Express server listening on http://localhost:${PORT}`);
 });
 
 // export this as a module, making the app object available when imported.
