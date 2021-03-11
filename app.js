@@ -1,6 +1,7 @@
 // require imports packages required by the application
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 
 // Specify Host and port
 const HOST = '127.0.0.1';
@@ -8,6 +9,9 @@ const PORT = 8080;
 
 // app is a new instance of express (the web app framework)
 let app = express();
+
+// adding morgan to log HTTP requests
+app.use(morgan('dev'));
 
 // Application settings
 app.use((req, res, next) => {

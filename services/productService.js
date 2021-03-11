@@ -1,6 +1,7 @@
 // Dependencies
 // Input validation package
 // https://www.npmjs.com/package/validator
+const validator = require('validator');
 const productValidator = require('../validators/productValidators');
 
 // require the database connection
