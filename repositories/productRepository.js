@@ -24,7 +24,7 @@ const SQL_SELECT_BY_CATID = 'SELECT * FROM dbo.product WHERE category_id = @id O
 
 // Second statement (Select...) returns inserted record identified by _id = SCOPE_IDENTITY()
 const SQL_INSERT = 'INSERT INTO dbo.product (category_id, product_name, product_description, product_stock, product_price) VALUES (@categoryId, @productName, @productDescription, @ProductStock, @ProductPrice); SELECT * from dbo.product WHERE _id = SCOPE_IDENTITY();';
-const SQL_UPDATE = 'UPDATE dbo.product SET category_id = @categoryId, product_name = @productName, product_description = @productDescription, ProductStock = @ProductStock, ProductPrice = @ProductPrice WHERE _id = @id; SELECT * FROM dbo.product WHERE _id = @id;';
+const SQL_UPDATE = 'UPDATE dbo.product SET category_id = @categoryId, product_name = @productName, product_description = @productDescription, Product_stock = @ProductStock, Product_price = @ProductPrice WHERE _id = @id; SELECT * FROM dbo.product WHERE _id = @id;';
 const SQL_DELETE = 'DELETE FROM dbo.product WHERE _id = @id;';
 
 // Get all products
@@ -44,6 +44,7 @@ let getProducts = async () => {
         
         // first element of the recordset contains products
         products = result.recordset[0];
+        console.log(products);
 
     // Catch and log errors to cserver side console 
     } catch (err) {
@@ -119,7 +120,6 @@ let createProduct = async (product) => {
         // Get a DB connection and execute SQL
         const pool = await dbConnPoolPromise
         const result = await pool.request()
-
             // set named parameter(s) in query
             // checks for potential sql injection
             .input('categoryId', sql.Int, product.category_id)    

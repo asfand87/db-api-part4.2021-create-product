@@ -11,7 +11,7 @@ const PORT = 8080;
 let app = express();
 
 // adding morgan to log HTTP requests
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 // Application settings
 app.use((req, res, next) => {
