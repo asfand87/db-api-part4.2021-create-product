@@ -97,11 +97,9 @@ router.post('/', async (req, res) => {
 // Like post but productId is provided and method = put
 router.put('/', async (req, res) => {
 
-    const productId = req.params.id;
 
-    const result = `This will update product with id = ${productId}`
 
-    res.json(result);
+    res.json('updated');
 });
 
 // DELETE single task.
