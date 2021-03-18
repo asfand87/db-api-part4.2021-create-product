@@ -95,7 +95,7 @@ router.post('/', async (req, res) => {
 
 // PUT update product
 // Like post but productId is provided and method = put
-router.put('/:id', async (req, res) => {
+router.put('/', async (req, res) => {
 
     const productId = req.params.id;
 
